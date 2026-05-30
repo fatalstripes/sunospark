@@ -17,10 +17,6 @@ Just open `index.html` in any modern browser. No install, no build step, no back
 - **Pro Tips** — Built-in current advice for writing better Suno 5.5 prompts
 - **Fully Offline** — Everything runs in your browser
 
-## Live Demo
-
-**Try it now:** [https://fatalstripes.github.io/sunospark/](https://fatalstripes.github.io/sunospark/)
-
 ## How to Use (5.5 Mode)
 
 1. Open `index.html` (defaults to 5.5 Optimized)
@@ -33,6 +29,12 @@ Just open `index.html` in any modern browser. No install, no build step, no back
 ### Keyboard Shortcuts
 - `/` — Focus the Genre input
 - `Cmd/Ctrl + Enter` — Generate
+
+## Tips for Suno 5.5
+
+- The **main prompt box** now does most of the work. Write rich, flowing descriptions instead of comma lists.
+- Include emotional atmosphere, sonic details, and scene setting in one cohesive paragraph.
+- Strange genre combinations still work great in 5.5.
 
 ## Using with Local AI (Ollama, LM Studio, etc.)
 
@@ -56,17 +58,16 @@ The Lyric Generator supports any OpenAI-compatible endpoint, including local mod
 
 **Note for small models (like gemma3:4b):** Smaller models benefit from very clear instructions. Use the "Custom Instructions" box to tell it the desired structure, style, and length.
 
-4. **Important for browser use**: You will likely need a CORS extension (search "CORS Unblock" in Chrome/Firefox store) because browsers block direct calls to localhost by default.
+4. **If you're using the live web version (https://fatalstripes.github.io/sunospark)**: Browsers block HTTPS pages from calling http://localhost for security. 
+   - Click the **"Download for Local AI"** button in the Lyric Generator panel.
+   - Open the downloaded `SunoSpark-local.html` file directly from your computer (it will use the `file://` protocol and work perfectly with Ollama).
+   - Use the new **"Test"** button for instant connection diagnostics.
+
+   If you stay on the live site you will also need a CORS Unblock extension, but the downloaded local copy is far more reliable.
 
 ### Other Local Tools
 - **LM Studio**: Use Base URL `http://localhost:1234/v1`
 - Most tools that expose an OpenAI-compatible `/v1` endpoint will work.
-
-## Tips for Suno 5.5
-
-- The **main prompt box** now does most of the work. Write rich, flowing descriptions instead of comma lists.
-- Include emotional atmosphere, sonic details, and scene setting in one cohesive paragraph.
-- Strange genre combinations still work great in 5.5.
 
 ## Tech
 
