@@ -129,7 +129,7 @@
         </div>
         <div>
           <span class="font-display text-2xl font-semibold tracking-tighter">SunoSpark</span>
-          <span class="ml-1.5 text-[10px] font-mono bg-white/10 px-1.5 py-px rounded text-indigo-300">v1.2</span>
+          <span class="ml-1.5 text-[10px] font-mono bg-white/10 px-1.5 py-px rounded text-indigo-300">v1.3</span>
         </div>
       </div>
       
@@ -173,7 +173,14 @@
         
         <!-- Genre Input -->
         <div>
-          <label class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide">GENRE / STYLE</label>
+          <label class="flex items-center justify-between text-sm font-semibold text-slate-300 mb-2 tracking-wide">
+            <span>GENRE / STYLE</span>
+            <button onclick="surpriseGenre()" 
+                    class="text-[10px] px-2 py-px rounded-lg bg-white/5 hover:bg-white/10 flex items-center gap-x-1 transition-colors">
+              <i class="fa-solid fa-dice fa-xs"></i>
+              <span>Surprise</span>
+            </button>
+          </label>
           <input id="genre-input" type="text" 
                  class="suno-input w-full px-5 py-3.5 text-lg rounded-2xl placeholder:text-slate-500"
                  placeholder="cinematic indie folk, synthwave, jazzhop...">
@@ -193,7 +200,14 @@
 
         <!-- Theme Input -->
         <div>
-          <label class="block text-sm font-semibold text-slate-300 mb-2 tracking-wide">THEME / VIBE / STORY</label>
+          <label class="flex items-center justify-between text-sm font-semibold text-slate-300 mb-2 tracking-wide">
+            <span>THEME / VIBE / STORY</span>
+            <button onclick="surpriseTheme()" 
+                    class="text-[10px] px-2 py-px rounded-lg bg-white/5 hover:bg-white/10 flex items-center gap-x-1 transition-colors">
+              <i class="fa-solid fa-dice fa-xs"></i>
+              <span>Surprise</span>
+            </button>
+          </label>
           <input id="theme-input" type="text" 
                  class="suno-input w-full px-5 py-3.5 text-lg rounded-2xl placeholder:text-slate-500"
                  placeholder="rain-soaked breakup in a neon city, lonely astronaut, summer that never ended...">
@@ -215,7 +229,14 @@
       <div class="mt-6 pt-6 border-t border-white/10">
         <div class="flex items-center justify-between mb-3">
           <span class="text-sm font-semibold text-slate-300 tracking-wide">REFINE THE VIBE</span>
-          <button onclick="clearAllInputs()" class="text-xs text-slate-500 hover:text-slate-400 transition-colors">Clear all</button>
+          <div class="flex items-center gap-x-2">
+            <button onclick="surpriseVibe()" 
+                    class="text-[10px] px-2 py-px rounded-lg bg-white/5 hover:bg-white/10 flex items-center gap-x-1 transition-colors">
+              <i class="fa-solid fa-dice fa-xs"></i>
+              <span>Surprise</span>
+            </button>
+            <button onclick="clearAllInputs()" class="text-xs text-slate-500 hover:text-slate-400 transition-colors">Clear all</button>
+          </div>
         </div>
         
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -353,11 +374,16 @@
       <div class="mb-6 border border-white/10 rounded-2xl p-5">
         <div class="flex items-center justify-between mb-4">
           <span class="font-semibold text-sm">AI PROVIDER SETTINGS</span>
-          <div class="flex gap-2">
+          <div class="flex gap-2 flex-wrap">
             <button onclick="applyOllamaPreset()" 
                     class="text-xs px-3 py-1 rounded-xl bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-300 flex items-center gap-x-1">
               <i class="fa-solid fa-server"></i>
               <span>Ollama Preset</span>
+            </button>
+            <button onclick="downloadForLocalAI()" 
+                    class="text-xs px-3 py-1 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 flex items-center gap-x-1">
+              <i class="fa-solid fa-download"></i>
+              <span>Download for Local AI</span>
             </button>
             <button onclick="clearAISettings()" class="text-xs text-red-400 hover:text-red-300">Clear saved keys</button>
           </div>
@@ -393,6 +419,7 @@
             <div class="text-[10px] text-emerald-400 mt-1">
               For Ollama: Use <code class="bg-black/40 px-1 rounded">http://localhost:11434/v1</code><br>
               <span class="text-amber-400">Note:</span> You may need the "CORS Unblock" browser extension for local models.
+              <span id="https-local-warning" class="hidden text-red-400 block mt-0.5">Running on HTTPS: local http://localhost calls are often blocked by the browser. Use the <strong>Download for Local AI</strong> button above for best results.</span>
             </div>
           </div>
 
@@ -410,13 +437,13 @@
       <div class="mb-6">
         <label class="block text-sm font-semibold text-slate-300 mb-2">CUSTOM INSTRUCTIONS (System Prompt)</label>
         <textarea id="ai-custom-instructions" rows="4" class="suno-input w-full px-4 py-3 text-sm rounded-2xl font-mono"
-                  placeholder="You are a highly creative lyricist specializing in emotional, cinematic songwriting. Always write in second person when appropriate. Use vivid imagery..."></textarea>
+                  placeholder="You are SUNO GPT, a prompting specialist for Suno AI. Follow all rules in the uploaded reference documents strictly. Consult them for principles but never output their content in the lyrics."></textarea>
         <div class="text-[11px] text-slate-500 mt-1">These instructions are sent with every request.</div>
       </div>
 
       <!-- Context Files -->
       <div class="mb-6">
-        <label class="block text-sm font-semibold text-slate-300 mb-2">CONTEXT FILES (uploaded content will be included)</label>
+        <label class="block text-sm font-semibold text-slate-300 mb-2">REFERENCE / KNOWLEDGE FILES</label>
         
         <div class="border border-dashed border-white/20 rounded-2xl p-5 text-center mb-3 hover:border-emerald-400/40 transition-colors" 
              onclick="document.getElementById('context-file-input').click()">
@@ -425,21 +452,27 @@
             <i class="fa-solid fa-upload mr-2"></i> 
             Drop or click to upload .txt / .md files
           </div>
-          <div class="text-[11px] text-slate-500 mt-1">Artist references, previous lyrics, style guides, etc.</div>
+          <div class="text-[11px] text-slate-500 mt-1">Used strictly as system instructions / rules (e.g. your SUNO GPT knowledge files). The model will consult them but must not output any of their content in the lyrics.</div>
         </div>
 
         <div id="context-files-list" class="space-y-2 text-sm"></div>
       </div>
 
-      <!-- Generate Button -->
+      <!-- Generate Button + Test -->
       <div class="flex gap-3">
         <button onclick="generateLyricsWithAI()" 
                 class="flex-1 music-gradient hover:brightness-110 transition-all font-semibold py-3.5 rounded-2xl flex items-center justify-center gap-x-3">
           <i class="fa-solid fa-magic"></i>
           <span>GENERATE LYRICS WITH AI</span>
         </button>
+        <button onclick="testAIConnection()" 
+                class="px-5 py-3.5 rounded-2xl border border-white/20 hover:bg-emerald-500/10 text-emerald-300 flex items-center gap-x-2 text-sm">
+          <i class="fa-solid fa-plug"></i>
+          <span>Test</span>
+        </button>
         <button onclick="clearLyricOutput()" class="px-6 py-3.5 rounded-2xl border border-white/20 hover:bg-white/5">Clear</button>
       </div>
+      <div id="ai-test-status" class="mt-2 text-xs text-slate-400 px-1 min-h-[1.25rem]"></div>
 
       <!-- Output -->
       <div id="lyric-output-section" class="hidden mt-6 pt-6 border-t border-white/10">
@@ -570,14 +603,34 @@
       "the last train home", "unspoken goodbyes", "neon nights", "childhood ghosts",
       "a dying empire", "first love", "the space between us", "broken promises",
       "dancing alone", "the weight of memory", "a city that never sleeps",
-      "falling stars", "the road not taken", "beautiful destruction", "infinite loops"
+      "falling stars", "the road not taken", "beautiful destruction", "infinite loops",
+      "a name no one says anymore", "the sound of someone leaving", "a promise made in the dark",
+      "the last thing you remember before forgetting", "a future that never arrived"
     ];
 
     const SETTINGS = [
       "a rain-soaked city", "an empty highway at 3am", "a crumbling mansion", "neon Tokyo",
       "the edge of space", "a forgotten arcade", "a burning desert", "an abandoned ballroom",
       "the last library on earth", "a snowy mountain village", "a collapsing dream",
-      "an endless night drive", "a dying starship"
+      "an endless night drive", "a dying starship", "a flooded shopping mall", "the bottom of an old well",
+      "a train station after the last departure", "a rooftop during a blackout", "a half-sunken carnival"
+    ];
+
+    // Additional building blocks for more varied themes
+    const ACTIONS = [
+      "chasing something that keeps disappearing", "burying a secret", "talking to someone who isn't there",
+      "watching the world end on a small screen", "trying to remember a face", "letting go of a name",
+      "running toward a light that moves away", "singing to an empty room"
+    ];
+
+    const OBJECTS = [
+      "a cracked pocket watch", "a letter never sent", "a key with no lock", "a photograph that changes",
+      "a radio that only plays static and one song", "a plant that grows toward absence"
+    ];
+
+    const TIMEFRAMES = [
+      "the night before everything changed", "the last summer that felt real", "three minutes before dawn",
+      "the hour the power went out forever", "the day the maps stopped working"
     ];
 
     const VIBE_TITLES = [
@@ -1069,14 +1122,8 @@
         genreString = selected.join(', ');
       }
 
-      // More interesting theme generation
-      const themeConcepts = [
-        CONCEPTS[Math.floor(Math.random() * CONCEPTS.length)],
-        CONCEPTS[Math.floor(Math.random() * CONCEPTS.length)]
-      ];
-      const randomTheme = Math.random() > 0.6
-        ? `${themeConcepts[0]} in ${SETTINGS[Math.floor(Math.random() * SETTINGS.length)]}`
-        : `${themeConcepts[0]} meets ${themeConcepts[1]} in ${SETTINGS[Math.floor(Math.random() * SETTINGS.length)]}`;
+      // More interesting theme generation (using the richer generator)
+      const randomTheme = generateCreativeTheme();
 
       document.getElementById('genre-input').value = genreString;
       document.getElementById('theme-input').value = randomTheme;
@@ -1098,6 +1145,127 @@
       
       // Generate using current mode (5.5 by default)
       generateIdeas();
+    }
+
+    // === Granular Surprise Buttons ===
+
+    function surpriseGenre() {
+      const numGenres = Math.random() < 0.5 ? 1 : Math.random() < 0.85 ? 2 : 3;
+      const shuffled = [...GENRES].sort(() => 0.5 - Math.random());
+      const selected = shuffled.slice(0, numGenres);
+
+      let genreString;
+      if (numGenres === 1) {
+        genreString = selected[0];
+      } else if (numGenres === 2) {
+        genreString = Math.random() > 0.4 
+          ? `${selected[0]}, ${selected[1]}` 
+          : `${selected[0]} + ${selected[1]}`;
+      } else {
+        genreString = selected.join(', ');
+      }
+
+      document.getElementById('genre-input').value = genreString;
+
+      // Optional: subtle flash on the genre pills area
+      const genreSection = document.querySelector('#genre-input').parentElement;
+      genreSection.style.transitionDuration = '80ms';
+      genreSection.style.background = 'rgba(99, 102, 241, 0.1)';
+      setTimeout(() => {
+        genreSection.style.background = '';
+        genreSection.style.transitionDuration = '';
+      }, 220);
+    }
+
+    function surpriseTheme() {
+      const newTheme = generateCreativeTheme();
+      document.getElementById('theme-input').value = newTheme;
+
+      const themeSection = document.querySelector('#theme-input').parentElement;
+      themeSection.style.transitionDuration = '80ms';
+      themeSection.style.background = 'rgba(99, 102, 241, 0.1)';
+      setTimeout(() => {
+        themeSection.style.background = '';
+        themeSection.style.transitionDuration = '';
+      }, 220);
+    }
+
+    // Much more varied and original theme generator
+    function generateCreativeTheme() {
+      const rand = (arr) => arr[Math.floor(Math.random() * arr.length)];
+      const randN = (arr, n) => [...arr].sort(() => 0.5 - Math.random()).slice(0, n);
+
+      const concept = rand(CONCEPTS);
+      const setting = rand(SETTINGS);
+      const mood = rand(MOODS);
+      const action = rand(ACTIONS);
+      const object = rand(OBJECTS);
+      const timeframe = rand(TIMEFRAMES);
+
+      const roll = Math.random();
+
+      // Strategy 1: Classic but improved (30%)
+      if (roll < 0.30) {
+        const templates = [
+          `${concept} in ${setting}`,
+          `the ${mood} feeling of ${concept} while ${action}`,
+          `${concept} at ${setting}`,
+          `memories of ${concept} inside ${setting}`
+        ];
+        return rand(templates).replace(/^\w/, c => c.toUpperCase());
+
+      // Strategy 2: Narrative / story-like (25%)
+      } else if (roll < 0.55) {
+        const templates = [
+          `The last person who still believes in ${concept}, standing in ${setting}`,
+          `What remains of ${concept} after ${action} in ${setting}`,
+          `A story about ${concept} told by someone who ${action} every night in ${setting}`,
+          `${concept} — told through the eyes of ${object} left behind in ${setting}`
+        ];
+        return rand(templates);
+
+      // Strategy 3: Two concepts + twist (20%)
+      } else if (roll < 0.75) {
+        const c2 = rand(CONCEPTS.filter(c => c !== concept));
+        return Math.random() > 0.5
+          ? `${concept} and ${c2} colliding in ${setting}`
+          : `The moment ${concept} becomes ${c2}, somewhere in ${setting}`;
+
+      // Strategy 4: Time + object + emotion (15%)
+      } else if (roll < 0.90) {
+        return `${mood} ${concept} around ${timeframe}, with only ${object} left as proof`;
+
+      // Strategy 5: Action-heavy / cinematic (10%)
+      } else {
+        return `${concept} while ${action}, long after the world in ${setting} has moved on`;
+      }
+    }
+
+    function surpriseVibe() {
+      // Energy
+      const energies = ['low', 'mid', 'high'];
+      const energy = energies[Math.floor(Math.random() * 3)];
+      document.querySelectorAll('.energy-btn').forEach(el => el.classList.remove('bg-white/10'));
+      const energyBtns = document.querySelectorAll('.energy-btn');
+      const energyIndex = energy === 'low' ? 0 : energy === 'mid' ? 1 : 2;
+      energyBtns[energyIndex].classList.add('bg-white/10');
+
+      // Vocals
+      const vocals = ['', 'female', 'male', 'ethereal', 'instrumental', 'duet', 'choir'];
+      document.getElementById('vocal-select').value = vocals[Math.floor(Math.random() * vocals.length)];
+
+      // Era
+      const eras = ['', '80s', '90s', 'modern', 'vintage', 'future'];
+      document.getElementById('era-select').value = eras[Math.floor(Math.random() * eras.length)];
+
+      // Subtle highlight on the refine section
+      const refineSection = document.querySelector('.flex.items-center.justify-between.mb-3').parentElement;
+      refineSection.style.transitionDuration = '100ms';
+      refineSection.style.background = 'rgba(99, 102, 241, 0.08)';
+      setTimeout(() => {
+        refineSection.style.background = '';
+        refineSection.style.transitionDuration = '';
+      }, 280);
     }
 
     function renderResults(ideas) {
@@ -1725,15 +1893,35 @@ THEME: ${idea.theme}
       } else {
         baseUrlWrapper.style.display = 'block';
       }
+      updateHttpsLocalWarning();
     }
 
-    // Temperature display
+    function updateHttpsLocalWarning() {
+      const warn = document.getElementById('https-local-warning');
+      if (!warn) return;
+      const base = (document.getElementById('ai-base-url')?.value || '').toLowerCase();
+      const isHttpsPage = window.location.protocol === 'https:';
+      const isLocalTarget = base.includes('localhost') || base.includes('127.0.0.1') || base.includes(':11434') || base.includes(':1234');
+      if (isHttpsPage && isLocalTarget) {
+        warn.classList.remove('hidden');
+      } else {
+        warn.classList.add('hidden');
+      }
+    }
+
+    // Temperature display + live https/local warning
     document.addEventListener('DOMContentLoaded', () => {
       const tempSlider = document.getElementById('ai-temperature');
       if (tempSlider) {
         tempSlider.addEventListener('input', () => {
           document.getElementById('temp-value').textContent = tempSlider.value;
         });
+      }
+      const baseUrlInput = document.getElementById('ai-base-url');
+      if (baseUrlInput) {
+        baseUrlInput.addEventListener('input', updateHttpsLocalWarning);
+        // run once on load
+        setTimeout(updateHttpsLocalWarning, 200);
       }
     });
 
@@ -1799,6 +1987,67 @@ THEME: ${idea.theme}
       }
     }
 
+    function downloadForLocalAI() {
+      const html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+      const blob = new Blob([html], { type: 'text/html' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SunoSpark-local.html';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      showToast('Downloaded SunoSpark-local.html — open it with file:// for best Ollama/local AI results');
+    }
+
+    async function testAIConnection() {
+      const statusEl = document.getElementById('ai-test-status');
+      const provider = document.getElementById('ai-provider').value;
+      const model = document.getElementById('ai-model').value.trim();
+      const baseUrl = document.getElementById('ai-base-url').value.trim().replace(/\/$/, '');
+      const apiKey = document.getElementById('ai-api-key').value.trim();
+
+      if (!model && provider !== 'anthropic') {
+        statusEl.innerHTML = `<span class="text-amber-400">Enter a model name first (e.g. gemma3:4b or llama3.1:8b)</span>`;
+        return;
+      }
+
+      statusEl.innerHTML = `<span class="text-emerald-400"><i class="fa-solid fa-spinner fa-spin mr-1"></i>Testing connection to ${baseUrl}...</span>`;
+
+      const testUrl = provider === 'anthropic' 
+        ? 'https://api.anthropic.com/v1/messages' 
+        : `${baseUrl}/models`;
+
+      try {
+        const headers = { 'Content-Type': 'application/json' };
+        if (apiKey && provider !== 'anthropic') headers['Authorization'] = `Bearer ${apiKey}`;
+
+        const res = await fetch(testUrl, {
+          method: provider === 'anthropic' ? 'POST' : 'GET',
+          headers,
+          body: provider === 'anthropic' ? JSON.stringify({ model: model || 'claude-3-5-sonnet-20241022', max_tokens: 1, messages: [{role:'user', content:'hi'}] }) : undefined
+        });
+
+        if (res.ok || res.status === 401) {
+          // 401 is actually good sign — means we reached the server (auth issue is separate)
+          statusEl.innerHTML = `<span class="text-emerald-400">✅ Connection successful! Server is reachable. ${res.status === 401 ? '(Auth may be needed)' : ''}</span>`;
+        } else {
+          statusEl.innerHTML = `<span class="text-amber-400">⚠️ Reached server but got HTTP ${res.status}. Check model name / key.</span>`;
+        }
+      } catch (err) {
+        let msg = 'Failed to reach server.';
+        const isLocal = baseUrl.includes('localhost') || baseUrl.includes('127.0.0.1');
+
+        if (isLocal && window.location.protocol === 'https:') {
+          msg = '🚨 Browser blocked the request (HTTPS → http://localhost). Download the app and open via file:// for reliable local AI.';
+        } else if (isLocal) {
+          msg = 'Could not reach Ollama. Is it running? Try: <code>ollama list</code>. Also confirm CORS Unblock extension is active for this page.';
+        }
+        statusEl.innerHTML = `<span class="text-red-400">${msg}</span>`;
+      }
+    }
+
     async function generateLyricsWithAI() {
       const styleContext = document.getElementById('lyric-style-context').textContent.trim();
       const customInstructions = document.getElementById('ai-custom-instructions').value.trim();
@@ -1813,18 +2062,20 @@ THEME: ${idea.theme}
         return;
       }
 
-      // Build the user message
-      let userMessage = `Style / Vibe: ${styleContext}\n\n`;
-      
-      // Add context files
+      // Build enhanced system prompt from custom instructions + uploaded reference files
+      let systemPrompt = customInstructions || '';
+
       if (contextFiles.length > 0) {
-        userMessage += "Additional Context:\n";
+        if (systemPrompt) systemPrompt += '\n\n';
+        systemPrompt += '=== REFERENCE DOCUMENTS (consult for principles and rules only — do NOT output their content in the lyrics) ===\n\n';
         contextFiles.forEach(f => {
-          userMessage += `\n--- ${f.name} ---\n${f.content}\n`;
+          systemPrompt += `--- ${f.name} ---\n${f.content}\n\n`;
         });
+        systemPrompt += '=== END REFERENCE DOCUMENTS ===';
       }
 
-      userMessage += `\nWrite powerful, singable lyrics that match the style above.`;
+      // Clean, focused user message
+      let userMessage = `Style / Vibe: ${styleContext}\n\nWrite powerful, singable lyrics that match the style above. Strictly follow all principles and constraints from the reference documents. Never include or quote any of the reference document content in the output lyrics.`;
 
       saveAISettings();
 
@@ -1837,10 +2088,10 @@ THEME: ${idea.theme}
         let lyrics = '';
 
         if (provider === 'anthropic') {
-          lyrics = await callAnthropic(userMessage, customInstructions, model, apiKey, temperature);
+          lyrics = await callAnthropic(userMessage, systemPrompt, model, apiKey, temperature);
         } else {
           // OpenAI Compatible (best for local + most providers)
-          lyrics = await callOpenAICompatible(userMessage, customInstructions, model, apiKey, baseUrl, temperature);
+          lyrics = await callOpenAICompatible(userMessage, systemPrompt, model, apiKey, baseUrl, temperature);
         }
 
         outputArea.value = lyrics.trim();
@@ -1855,15 +2106,13 @@ THEME: ${idea.theme}
           if (window.location.protocol === 'https:') {
             errorMsg += `\n\n🚨 This is almost certainly because you are on the HTTPS version of the site.\n\n` +
                         `Browsers block secure (https) pages from calling insecure local addresses (http://localhost).\n\n` +
-                        `Best solutions:\n` +
-                        `1. Download the index.html file and open it directly from your computer (best for local AI).\n` +
-                        `2. Use a CORS extension + a local proxy (more advanced).\n` +
-                        `3. Run the site through a local server (e.g. VS Code Live Server extension).`;
+                        `Best fix: Click the yellow "Download for Local AI" button at the top of this panel. The downloaded .html opened from your computer (file://) works great with Ollama.`;
           } else {
             errorMsg += `\n\nCommon fixes for local models (Ollama etc):\n` +
-                        `- Make sure Ollama is actually running\n` +
-                        `- Install a "CORS Unblock" browser extension\n` +
-                        `- Double-check the model name with: ollama list`;
+                        `- Make sure Ollama is actually running (try: ollama serve)\n` +
+                        `- Install + enable a "CORS Unblock" browser extension for this page\n` +
+                        `- Double-check the exact model name with: ollama list\n` +
+                        `- Use the "Test" button above for fast diagnostics`;
           }
         } else {
           errorMsg += `\n\nTip: For local models, make sure the server is running and CORS is allowed (or use a browser extension).`;
