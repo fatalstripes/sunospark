@@ -1,8 +1,15 @@
 # SunoSpark
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-fatalstripes.github.io%2Fsunospark-10b981?style=for-the-badge&logo=vercel&logoColor=white)](https://fatalstripes.github.io/sunospark/)
+[![GitHub](https://img.shields.io/badge/GitHub-fatalstripes%2Fsunospark-181717?style=for-the-badge&logo=github)](https://github.com/fatalstripes/sunospark)
+
 A beautiful, zero-dependency web app that generates high-quality, ready-to-use prompts for **Suno 5.5** (with Classic mode support).
 
 Just open `index.html` in any modern browser. No install, no build step, no backend.
+
+## 🚀 Live Demo
+
+**Try it now:** [https://fatalstripes.github.io/sunospark/](https://fatalstripes.github.io/sunospark/)
 
 ## Features
 
