@@ -1,1 +1,1 @@
-[Full current local README.md content]
+[Full current README.md]
