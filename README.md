@@ -65,6 +65,30 @@ The Lyric Generator supports any OpenAI-compatible endpoint, including local mod
 
    If you stay on the live site you will also need a CORS Unblock extension, but the downloaded local copy is far more reliable.
 
+#### Windows Notes (Ollama Desktop App)
+
+Most Windows users install the official Ollama desktop app. This app automatically starts a background server. Because of this, you will often see "bind: Only one usage of each socket address" when trying to run `ollama serve`.
+
+**Quick test method:**
+1. Right-click the Ollama icon in the system tray (bottom right) → **Quit**
+2. Open PowerShell and run:
+   ```powershell
+   $env:OLLAMA_ORIGINS="*"; ollama serve
+   ```
+   Leave this window open while testing.
+
+**Recommended permanent fix (no extra terminal window needed):**
+```powershell
+[System.Environment]::SetEnvironmentVariable('OLLAMA_ORIGINS', '*', 'User')
+```
+Then fully quit the Ollama app (tray → Quit) and restart it normally. The desktop app will now start the server with CORS allowed.
+
+When stuck, use the **Test** button in SunoSpark — it gives detailed Windows-specific guidance including the exact commands above. You can also diagnose the port with:
+```powershell
+Get-NetTCPConnection -LocalPort 11434
+Get-Process | Where-Object { $_.ProcessName -match 'ollama' }
+```
+
 ### Other Local Tools
 - **LM Studio**: Use Base URL `http://localhost:1234/v1`
 - Most tools that expose an OpenAI-compatible `/v1` endpoint will work.
